@@ -21,7 +21,7 @@ void print_easy_route(field** map) {
 			}
 		}
 	}
-	printf("055");
+	write(1, "055", 3);
 	if(myx < goal_x) {
 		for(int i = myx; i < goal_x; i++) {
 			write(1, "R", 1);

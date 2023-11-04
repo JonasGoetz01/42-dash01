@@ -97,7 +97,7 @@ void gen_fastest_routes(field** map)
 					skills[2] = k;
 					if (a_star(map, i, j, k))
 					{
-						return;
+						// return;
 					}
                 }
             }
