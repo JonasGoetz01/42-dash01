@@ -23,20 +23,26 @@ bool is_end(int x, int y, int goal_x, int goal_y) {
 void print_path(node* current, int i, int j, int k) {
     // Print i, j, k only once at the beginning of the line
     if (current->parent == NULL) {
-        printf("%d%d%d", i, j, k);
+		char chr;
+		chr = i + '0';
+		write(1, &i, 1);
+		chr = j + '0';
+		write(1, &j, 1);
+		chr = k + '0';
+		write(1, &k, 1);
     }
     if (current->parent != NULL) {
         print_path(current->parent, i, j, k);
         int x_diff = current->x - current->parent->x;
         int y_diff = current->y - current->parent->y;
         if (x_diff == 1) {
-            printf("R");
+            write(1, "R", 1);
         } else if (x_diff == -1) {
-            printf("L");
+            write(1, "L", 1);
         } else if (y_diff == 1) {
-            printf("D");
+            write(1, "D", 1);
         } else if (y_diff == -1) {
-            printf("U");
+            write(1, "U", 1);
         }
     }
 }
@@ -85,19 +91,21 @@ void gen_fastest_routes(field** map)
         for (int j = 0; j <= 5; ++j) {
             for (int k = 0; k <= 5; ++k) {
                 // Check if the sum is not more than 10
-                if (i + j + k == 10) {
+                if (i + j + k <= 10) {
                     skills[0] = i;
 					skills[1] = j;
 					skills[2] = k;
-					a_star(map, i, j, k);
-					// printf("\n");
+					if (a_star(map, i, j, k))
+					{
+						return;
+					}
                 }
             }
         }
     }
 }
 
-void a_star(field** map, int i, int j, int k) {
+bool a_star(field** map, int i, int j, int k) {
 
 	int map_size_x = get_map_size_x(map);
 	int map_size_y = get_map_size_y(map);
@@ -120,7 +128,7 @@ void a_star(field** map, int i, int j, int k) {
 	}
 
 	if (myx == -1 || myy == -1 || goal_x == -1 || goal_y == -1) {
-		return;
+		return false;
 	}
 
 	
@@ -154,9 +162,11 @@ void a_star(field** map, int i, int j, int k) {
 			{
 				cost = current->g;
 				print_path(current, i, j, k);
-				printf("\n");
+				write(1, "\n", 1);
+				free(current);
+				return true;
 			}
-			return;
+			return false;
 		}
 
 		open_list[current_index] = open_list[--open_list_size];
@@ -219,5 +229,5 @@ void a_star(field** map, int i, int j, int k) {
 			}
 		}
 	}
-
+	return false;
 }
