@@ -6,7 +6,7 @@
 /*   By: jgotz <jgotz@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 09:45:35 by lzipp             #+#    #+#             */
-/*   Updated: 2023/11/04 12:05:47 by jgotz            ###   ########.fr       */
+/*   Updated: 2023/11/04 13:04:48 by jgotz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ field	**get_field_rows(char **map_array, int row_num)
 	field	**map;
 	int		i;
 
-	map = ft_calloc(row_num, sizeof(field *));
+	map = ft_calloc(row_num + 1, sizeof(field *));
 	if (!map)
 		return (NULL);
 	i = 0;
@@ -52,6 +52,7 @@ field	**get_field_rows(char **map_array, int row_num)
 		map[i] = get_fields(map_array[i]);
 		i++;
 	}
+	map[i] = NULL;
 	return (map);
 }
 
@@ -73,15 +74,19 @@ field	*get_fields(char *map)
 	while (char_index < row_len - 1)
 	{
 		fields[field_index].type = map[char_index];
+		fields[field_index].cost_mult = map[char_index + 1] - '0';
 		fields[field_index].is_start = 0;
 		fields[field_index].is_end = 0;
 		if (map[char_index + 1] == 'M')
 			fields[field_index].is_start = 1;
 		if (map[char_index + 1] == 'G')
 			fields[field_index].is_end = 1;
-		fields[field_index].cost_mult = map[char_index + 1] - '0';
 		char_index += 2;
 		field_index++;
 	}
+	fields[field_index].type = -1;
+	fields[field_index].cost_mult = -1;
+	fields[field_index].is_start = -1;
+	fields[field_index].is_end = -1;
 	return (fields);
 }

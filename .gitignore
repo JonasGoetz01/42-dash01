@@ -8,3 +8,11 @@ a.out
 
 */**/*.a
 */**/*.o
+
+*/*.txt
+*/tests/
+
+*/*.txt
+*/tests/
+
+marvin
