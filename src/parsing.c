@@ -6,40 +6,76 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 09:45:35 by lzipp             #+#    #+#             */
-/*   Updated: 2023/11/04 10:17:44 by lzipp            ###   ########.fr       */
+/*   Updated: 2023/11/04 10:28:48 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/parsing.h"
 
-char	*get_map_char(char *file)
+field	*get_fields(char *map);
+
+field	**get_field_rows(char **map_array, int row_num);
+
+char	*get_map(char *file)
 {
 	int		fd;
 	char	*line;
 	char	*lines;
-	char	**map;
+	char	**map_array;
+	int		row_num;
 
 	fd = open(file, O_RDONLY);
 	lines = ft_strdup("");
 	if (!lines || fd < 0)
 		return (NULL);
+	row_num = 1;
 	while (get_next_line(fd, &line) > 0)
 	{
 		lines = ft_strjoin(lines, line);
 		lines = ft_strjoin(lines, "\n");
 		free(line);
+		row_num++;
 	}
 	close(fd);
-	map = ft_split(lines, '\n');
+	map_array = ft_split(lines, '\n');
+	return (get_field_rows(map_array, row_num));
+}
+
+field	**get_field_rows(char **map_array, int row_num)
+{
+	field	**map;
+	int		i;
+
+	map = ft_calloc(row_num, sizeof(field *));
+	if (!map)
+		return (NULL);
+	i = 0;
+	while (i < row_num)
+	{
+		map[i] = get_fields(map_array[i]);
+		i++;
+	}
 	return (map);
 }
 
-
-
 field	*get_fields(char *map)
 {
+	int		i;
 	int		count;
-	// ;
+	int		row_len;
+	field	*fields;
 
-	count = ft_strlen(map) / 2;
+	row_len = ft_strlen(map);
+	count = row_len / 2;
+	fields = ft_calloc(count, sizeof(field));
+	if (!fields)
+		return (NULL);
+	i = 0;
+	while (i < row_len - 1)
+	{
+		fields[i].type = map[i];
+		fields[i].cost_mult = map[i + 1] - '0';
+		i += 2;
+	}
+	return (fields);
 }
