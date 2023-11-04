@@ -6,7 +6,7 @@
  * E = 2
 */
 int skills[3] = {5, 5, 0};
-int cost = 0;
+int cost = -1;
 
 int heuristic(int x1, int y1, int x2, int y2) {
 	return abs(x1 - x2) + abs(y1 - y2);
@@ -20,22 +20,27 @@ bool is_end(int x, int y, int goal_x, int goal_y) {
 	return x == goal_x && y == goal_y;
 }
 
-void print_path(node* current) {
-	if (current->parent != NULL) {
-		print_path(current->parent);
-		int x_diff = current->x - current->parent->x;
-		int y_diff = current->y - current->parent->y;
-		if (x_diff == 1) {
-			printf("R");
-		} else if (x_diff == -1) {
-			printf("L");
-		} else if (y_diff == 1) {
-			printf("D");
-		} else if (y_diff == -1) {
-			printf("U");
-		}
-	}
+void print_path(node* current, int i, int j, int k) {
+    // Print i, j, k only once at the beginning of the line
+    if (current->parent == NULL) {
+        printf("%d%d%d", i, j, k);
+    }
+    if (current->parent != NULL) {
+        print_path(current->parent, i, j, k);
+        int x_diff = current->x - current->parent->x;
+        int y_diff = current->y - current->parent->y;
+        if (x_diff == 1) {
+            printf("R");
+        } else if (x_diff == -1) {
+            printf("L");
+        } else if (y_diff == 1) {
+            printf("D");
+        } else if (y_diff == -1) {
+            printf("U");
+        }
+    }
 }
+
 
 size_t get_map_size_x(field** map) {
 	size_t map_size_x = 0;
@@ -80,19 +85,19 @@ void gen_fastest_routes(field** map)
         for (int j = 0; j <= 5; ++j) {
             for (int k = 0; k <= 5; ++k) {
                 // Check if the sum is not more than 10
-                if (i + j + k <= 10) {
+                if (i + j + k == 10) {
                     skills[0] = i;
 					skills[1] = j;
 					skills[2] = k;
-					a_star(map);
-					printf("\n");
+					a_star(map, i, j, k);
+					// printf("\n");
                 }
             }
         }
     }
 }
 
-void a_star(field** map) {
+void a_star(field** map, int i, int j, int k) {
 
 	int map_size_x = get_map_size_x(map);
 	int map_size_y = get_map_size_y(map);
@@ -145,11 +150,12 @@ void a_star(field** map) {
 		}
 
 		if (is_end(current->x, current->y, goal_x, goal_y)) {
-			// if(cost > current->g || cost == -1)
-			// {
-			// 	cost = current->g;
-				print_path(current);
-			// }
+			if(cost == -1 || cost > current->g)
+			{
+				cost = current->g;
+				print_path(current, i, j, k);
+				printf("\n");
+			}
 			return;
 		}
 

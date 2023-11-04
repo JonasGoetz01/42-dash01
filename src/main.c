@@ -14,7 +14,6 @@ int main(int argc, char *argv[]) {
 	}
 
 	gen_fastest_routes(map);
-	// a_star(map);
 
 	return 0;
 }
