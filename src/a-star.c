@@ -1,15 +1,23 @@
 #include "../includes/a-star.h"
 
+/**
+ * W = 0
+ * A = 1
+ * E = 2
+*/
+int skills[3] = {5, 5, 0};
+int cost = 0;
+
 int heuristic(int x1, int y1, int x2, int y2) {
 	return abs(x1 - x2) + abs(y1 - y2);
 }
 
-bool is_valid(int x, int y, field** map, int map_size_x, int map_size_y) {
-	return x >= 0 && x < map_size_x && y >= 0 && y < map_size_y && map[x][y].type != 'W';
+bool is_valid(int x, int y, int map_size_x, int map_size_y) {
+	return x >= 0 && x < map_size_x && y >= 0 && y < map_size_y;
 }
 
-bool is_end(int x, int y, int end_x, int end_y) {
-	return x == end_x && y == end_y;
+bool is_end(int x, int y, int goal_x, int goal_y) {
+	return x == goal_x && y == goal_y;
 }
 
 void print_path(node* current) {
@@ -18,13 +26,13 @@ void print_path(node* current) {
 		int x_diff = current->x - current->parent->x;
 		int y_diff = current->y - current->parent->y;
 		if (x_diff == 1) {
-			printf("D");
-		} else if (x_diff == -1) {
-			printf("U");
-		} else if (y_diff == 1) {
 			printf("R");
-		} else if (y_diff == -1) {
+		} else if (x_diff == -1) {
 			printf("L");
+		} else if (y_diff == 1) {
+			printf("D");
+		} else if (y_diff == -1) {
+			printf("U");
 		}
 	}
 }
@@ -45,9 +53,71 @@ size_t get_map_size_y(field** map) {
 	return map_size_y;
 }
 
-void a_star(int start_x, int start_y, int end_x, int end_y, field** map) {
-	size_t map_size_x = get_map_size_x(map);
-	size_t map_size_y = get_map_size_y(map);
+double get_cost(int mult, char type)
+{
+	/**
+	 * 0 -> 4
+	 * 1 -> 3
+	 * 2 -> 2.5
+	 * 3 -> 2
+	 * 4 -> 1.5
+	 * 5 -> 1
+	*/
+	double multiplier[6] = {4.0, 3.0, 2.5, 2.0, 1.5, 1.0};
+
+	if(type == 'W')
+		return multiplier[skills[0]] *= mult;
+	else if(type == 'A')
+		return multiplier[skills[1]] *= mult;
+	else if(type == 'E')
+		return multiplier[skills[2]] *= mult;
+	return 100000;
+}
+
+void gen_fastest_routes(field** map)
+{
+	for (int i = 0; i <= 5; ++i) {
+        for (int j = 0; j <= 5; ++j) {
+            for (int k = 0; k <= 5; ++k) {
+                // Check if the sum is not more than 10
+                if (i + j + k <= 10) {
+                    skills[0] = i;
+					skills[1] = j;
+					skills[2] = k;
+					a_star(map);
+					printf("\n");
+                }
+            }
+        }
+    }
+}
+
+void a_star(field** map) {
+
+	int map_size_x = get_map_size_x(map);
+	int map_size_y = get_map_size_y(map);
+
+	int myx = -1;
+	int myy = -1;
+	int goal_x = -1;
+	int goal_y = -1;
+
+	for (int y = 0; y < map_size_y; ++y) {
+		for (int x = 0; x < map_size_x; ++x) {
+			if (map[y][x].is_start) {
+				myx = x;
+				myy = y;
+			} else if (map[y][x].is_end) {
+				goal_x = x;
+				goal_y = y;
+			}
+		}
+	}
+
+	if (myx == -1 || myy == -1 || goal_x == -1 || goal_y == -1) {
+		return;
+	}
+
 	
 	node* open_list[map_size_x * map_size_y];
 	node* closed_list[map_size_x * map_size_y];
@@ -55,10 +125,10 @@ void a_star(int start_x, int start_y, int end_x, int end_y, field** map) {
 	int closed_list_size = 0;
 
 	node* start_node = malloc(sizeof(node));
-	start_node->x = start_x;
-	start_node->y = start_y;
+	start_node->x = myx;
+	start_node->y = myy;
 	start_node->g = 0;
-	start_node->h = heuristic(start_x, start_y, end_x, end_y);
+	start_node->h = heuristic(myx, myy, goal_x, goal_y);
 	start_node->f = start_node->g + start_node->h;
 	start_node->parent = NULL;
 
@@ -74,8 +144,12 @@ void a_star(int start_x, int start_y, int end_x, int end_y, field** map) {
 			}
 		}
 
-		if (is_end(current->x, current->y, end_x, end_y)) {
-			print_path(current);
+		if (is_end(current->x, current->y, goal_x, goal_y)) {
+			// if(cost > current->g || cost == -1)
+			// {
+			// 	cost = current->g;
+				print_path(current);
+			// }
 			return;
 		}
 
@@ -92,12 +166,12 @@ void a_star(int start_x, int start_y, int end_x, int end_y, field** map) {
 			int new_x = x + dx[i];
 			int new_y = y + dy[i];
 
-			if (!is_valid(new_x, new_y, map, map_size_x, map_size_y)) {
+			if (!is_valid(new_x, new_y, map_size_x, map_size_y)) {
 				continue;
 			}
 
-			int g = current->g + map[new_x][new_y].cost_mult;
-			int h = heuristic(new_x, new_y, end_x, end_y);
+			int g = current->g + get_cost(map[new_y][new_x].cost_mult, map[new_y][new_x].type);
+			int h = heuristic(new_x, new_y, goal_x, goal_y);
 			int f = g + h;
 
 			node* child = malloc(sizeof(node));
@@ -139,4 +213,5 @@ void a_star(int start_x, int start_y, int end_x, int end_y, field** map) {
 			}
 		}
 	}
+
 }
