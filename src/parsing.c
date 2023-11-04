@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 09:45:35 by lzipp             #+#    #+#             */
-/*   Updated: 2023/11/04 10:40:55 by lzipp            ###   ########.fr       */
+/*   Updated: 2023/11/04 10:43:19 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*get_map(char *file)
 	if (!lines || fd < 0)
 		return (NULL);
 	row_num = 1;
-	while (get_next_line(fd, &line) > 0)
+	while (get_next_line(fd) > 0)
 	{
 		lines = ft_strjoin(lines, line);
 		lines = ft_strjoin(lines, "\n");
