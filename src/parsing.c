@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 09:45:35 by lzipp             #+#    #+#             */
-/*   Updated: 2023/11/04 10:37:36 by lzipp            ###   ########.fr       */
+/*   Updated: 2023/11/04 10:40:55 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,12 @@ field	*get_fields(char *map)
 	while (i < row_len - 1)
 	{
 		fields[i].type = map[i];
-		if (map[i] == 'S')
+		fields[i].is_start = 0;
+		fields[i].is_end = 0;
+		if (map[i + 1] == 'M')
 			fields[i].is_start = 1;
+		if (map[i + 1] == 'G')
+			fields[i].is_end = 1;
 		fields[i].cost_mult = map[i + 1] - '0';
 		i += 2;
 	}
