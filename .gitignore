@@ -1,0 +1,10 @@
+.vscode/
+**/.vscode/
+.idea/
+
+*/**/.DS_Store
+
+*/**/*.a
+*/**/*.o
+
+marvin
