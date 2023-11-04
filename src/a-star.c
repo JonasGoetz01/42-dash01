@@ -31,7 +31,7 @@ void print_path(node* current) {
 
 size_t get_map_size_x(field** map) {
 	size_t map_size_x = 0;
-	while (map[0][map_size_x].type != -1) {
+	while (map[0][map_size_x].cost_mult != -1) {
 		map_size_x++;
 	}
 	return map_size_x;
@@ -39,7 +39,7 @@ size_t get_map_size_x(field** map) {
 
 size_t get_map_size_y(field** map) {
 	size_t map_size_y = 0;
-	while (map[0][map_size_y].type) {
+	while (map[map_size_y]) {
 		map_size_y++;
 	}
 	return map_size_y;
