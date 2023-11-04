@@ -17,8 +17,8 @@ int main(int argc, char *argv[]) {
 	size_t map_size_y = get_map_size_y(map);
 
 	int start_x, start_y, end_x, end_y;
-	for (int i = 0; i < map_size_x; i++) {
-		for (int j = 0; j < map_size_y; j++) {
+	for (size_t i = 0; i < map_size_x; i++) {
+		for (size_t j = 0; j < map_size_y; j++) {
 			if (map[i][j].is_start) {
 				start_x = i;
 				start_y = j;
