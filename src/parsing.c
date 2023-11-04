@@ -6,11 +6,12 @@
 /*   By: jgotz <jgotz@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 09:45:35 by lzipp             #+#    #+#             */
-/*   Updated: 2023/11/04 13:04:48 by jgotz            ###   ########.fr       */
+/*   Updated: 2023/11/04 13:28:17 by jgotz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/parsing.h"
+#include "../includes/a-star.h"
 
 field	**get_map(char *file)
 {
@@ -35,6 +36,7 @@ field	**get_map(char *file)
 	}
 	close(fd);
 	map_array = ft_split(lines, '\n');
+	printf("row_num: %d\n", row_num);
 	return (get_field_rows(map_array, row_num));
 }
 
