@@ -6,13 +6,13 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 09:45:35 by lzipp             #+#    #+#             */
-/*   Updated: 2023/11/04 10:07:27 by lzipp            ###   ########.fr       */
+/*   Updated: 2023/11/04 10:17:44 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/parsing.h"
 
-char	*get_map(char *file)
+char	*get_map_char(char *file)
 {
 	int		fd;
 	char	*line;
@@ -35,3 +35,11 @@ char	*get_map(char *file)
 }
 
 
+
+field	*get_fields(char *map)
+{
+	int		count;
+	// ;
+
+	count = ft_strlen(map) / 2;
+}
