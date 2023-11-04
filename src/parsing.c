@@ -6,17 +6,17 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 09:45:35 by lzipp             #+#    #+#             */
-/*   Updated: 2023/11/04 10:43:19 by lzipp            ###   ########.fr       */
+/*   Updated: 2023/11/04 10:48:45 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/parsing.h"
 
-field	*get_fields(char *map);
+static field	*get_fields(char *map);
 
-field	**get_field_rows(char **map_array, int row_num);
+static field	**get_field_rows(char **map_array, int row_num);
 
-char	*get_map(char *file)
+field	**get_map(char *file)
 {
 	int		fd;
 	char	*line;
@@ -29,8 +29,9 @@ char	*get_map(char *file)
 	if (!lines || fd < 0)
 		return (NULL);
 	row_num = 1;
-	while (get_next_line(fd) > 0)
+	while (line != NULL)
 	{
+		line = get_next_line(fd);
 		lines = ft_strjoin(lines, line);
 		lines = ft_strjoin(lines, "\n");
 		free(line);
