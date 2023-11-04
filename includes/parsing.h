@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jgotz <jgotz@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 09:43:26 by lzipp             #+#    #+#             */
-/*   Updated: 2023/11/04 10:33:36 by lzipp            ###   ########.fr       */
+/*   Updated: 2023/11/04 10:40:10 by jgotz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
 
-# include "libft.h"
+# include "../libs/printf/ft_printf.h"
 # include <fcntl.h>
 
 typedef struct field
@@ -22,6 +22,6 @@ typedef struct field
 	int		cost_mult;
 	int		is_start;
 	int		is_end;
-}	field;
+}			field;
 
 #endif
