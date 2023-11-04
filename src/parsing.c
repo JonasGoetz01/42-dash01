@@ -6,17 +6,17 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 09:45:35 by lzipp             #+#    #+#             */
-/*   Updated: 2023/11/04 10:37:36 by lzipp            ###   ########.fr       */
+/*   Updated: 2023/11/04 11:32:04 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/parsing.h"
 
-field	*get_fields(char *map);
+static field	*get_fields(char *map);
 
-field	**get_field_rows(char **map_array, int row_num);
+static field	**get_field_rows(char **map_array, int row_num);
 
-char	*get_map(char *file)
+field	**get_map(char *file)
 {
 	int		fd;
 	char	*line;
@@ -29,10 +29,11 @@ char	*get_map(char *file)
 	if (!lines || fd < 0)
 		return (NULL);
 	row_num = 1;
-	while (get_next_line(fd, &line) > 0)
+	line = get_next_line(fd);
+	while (line != NULL)
 	{
+		line = get_next_line(fd);
 		lines = ft_strjoin(lines, line);
-		lines = ft_strjoin(lines, "\n");
 		free(line);
 		row_num++;
 	}
@@ -60,24 +61,31 @@ field	**get_field_rows(char **map_array, int row_num)
 
 field	*get_fields(char *map)
 {
-	int		i;
+	int		char_index;
+	int		field_index;
 	int		count;
 	int		row_len;
 	field	*fields;
 
 	row_len = ft_strlen(map);
 	count = row_len / 2;
-	fields = ft_calloc(count, sizeof(field));
+	fields = ft_calloc(count + 1, sizeof(field));
 	if (!fields)
 		return (NULL);
-	i = 0;
-	while (i < row_len - 1)
+	char_index = 0;
+	field_index = 0;
+	while (char_index < row_len - 1)
 	{
-		fields[i].type = map[i];
-		if (map[i] == 'S')
-			fields[i].is_start = 1;
-		fields[i].cost_mult = map[i + 1] - '0';
-		i += 2;
+		fields[field_index].type = map[char_index];
+		fields[field_index].is_start = 0;
+		fields[field_index].is_end = 0;
+		if (map[char_index + 1] == 'M')
+			fields[field_index].is_start = 1;
+		if (map[char_index + 1] == 'G')
+			fields[field_index].is_end = 1;
+		fields[field_index].cost_mult = map[char_index + 1] - '0';
+		char_index += 2;
+		field_index++;
 	}
 	return (fields);
 }
