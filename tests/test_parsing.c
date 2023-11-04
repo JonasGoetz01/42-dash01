@@ -39,11 +39,12 @@ void print_map(field **map, int row_num) {
 	}
 }
 
-int main() {
+int main(void) {
 	// map1
 	char *test_file = "map1.txt";
+	printf("parsing first file\n");
 	field **map = get_map(test_file);
-	if (map == NULL) {
+	if (!map) {
 		printf("Failed to parse map\n");
 		return 1;
 	}
@@ -52,7 +53,7 @@ int main() {
 	//map2
 	test_file = "map2.txt";
 	map = get_map(test_file);
-	if (map == NULL) {
+	if (!map) {
 		printf("Failed to parse map\n");
 		return 1;
 	}
@@ -61,7 +62,7 @@ int main() {
 	// map3
 	test_file = "map3.txt";
 	map = get_map(test_file);
-	if (map == NULL) {
+	if (!map) {
 		printf("Failed to parse map\n");
 		return 1;
 	}
