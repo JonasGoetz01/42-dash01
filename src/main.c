@@ -1,15 +1,10 @@
 #include "../includes/parsing.h"
+#include "../includes/a-star.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-
-#define MAX_MAP_SIZE 100
-
-int map_size_x, map_size_y;
-field map[MAX_MAP_SIZE][MAX_MAP_SIZE];
-
 
 int main(int argc, char *argv[]) {
 	
@@ -18,12 +13,11 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 
-	if (!parse_map(argv[1])) {
+	field **map = get_map(argv[1]);
+	if (!map) {
 		printf("Error: Invalid map file\n");
 		return 1;
 	}
-
-	field **map = get_map(argv[1]);
 
 	int start_x, start_y, end_x, end_y;
 	for (int i = 0; i < map_size_x; i++) {
