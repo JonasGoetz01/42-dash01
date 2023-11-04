@@ -7,6 +7,6 @@
 */**/*.o
 
 */*.txt
-*/tests
+*/tests/
 
 marvin
