@@ -1,20 +1,10 @@
-#include "../includes/parsing.h"
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
-
-#define MAX_MAP_SIZE 100
-
-int map_size_x, map_size_y;
-field map[MAX_MAP_SIZE][MAX_MAP_SIZE];
+#include "../includes/a-star.h"
 
 int heuristic(int x1, int y1, int x2, int y2) {
 	return abs(x1 - x2) + abs(y1 - y2);
 }
 
-bool is_valid(int x, int y) {
+bool is_valid(int x, int y, field** map, int map_size_x, int map_size_y) {
 	return x >= 0 && x < map_size_x && y >= 0 && y < map_size_y && map[x][y].type != 'W';
 }
 
@@ -39,9 +29,28 @@ void print_path(node* current) {
 	}
 }
 
-void a_star(int start_x, int start_y, int end_x, int end_y) {
-	node* open_list[MAX_MAP_SIZE * MAX_MAP_SIZE];
-	node* closed_list[MAX_MAP_SIZE * MAX_MAP_SIZE];
+size_t get_map_size_x(field** map) {
+	size_t map_size_x = 0;
+	while (map[0][map_size_x].type != -1) {
+		map_size_x++;
+	}
+	return map_size_x;
+}
+
+size_t get_map_size_y(field** map) {
+	size_t map_size_y = 0;
+	while (map[0][map_size_y].type) {
+		map_size_y++;
+	}
+	return map_size_y;
+}
+
+void a_star(int start_x, int start_y, int end_x, int end_y, field** map) {
+	size_t map_size_x = get_map_size_x(map);
+	size_t map_size_y = get_map_size_y(map);
+	
+	node* open_list[map_size_x * map_size_y];
+	node* closed_list[map_size_x * map_size_y];
 	int open_list_size = 0;
 	int closed_list_size = 0;
 
@@ -83,7 +92,7 @@ void a_star(int start_x, int start_y, int end_x, int end_y) {
 			int new_x = x + dx[i];
 			int new_y = y + dy[i];
 
-			if (!is_valid(new_x, new_y)) {
+			if (!is_valid(new_x, new_y, map, map_size_x, map_size_y)) {
 				continue;
 			}
 

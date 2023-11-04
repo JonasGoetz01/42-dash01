@@ -1,10 +1,4 @@
-#include "../includes/parsing.h"
 #include "../includes/a-star.h"
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
 
 int main(int argc, char *argv[]) {
 	
@@ -19,6 +13,9 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 
+	size_t map_size_x = get_map_size_x(map);
+	size_t map_size_y = get_map_size_y(map);
+
 	int start_x, start_y, end_x, end_y;
 	for (int i = 0; i < map_size_x; i++) {
 		for (int j = 0; j < map_size_y; j++) {
@@ -32,7 +29,7 @@ int main(int argc, char *argv[]) {
 			}
 		}
 	}
-	a_star(start_x, start_y, end_x, end_y);
+	a_star(start_x, start_y, end_x, end_y, map);
 	printf("\n");
 
 	return 0;
