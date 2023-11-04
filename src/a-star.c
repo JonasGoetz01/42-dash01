@@ -25,11 +25,11 @@ void print_path(node* current, int i, int j, int k) {
     if (current->parent == NULL) {
 		char chr;
 		chr = i + '0';
-		write(1, &i, 1);
+		write(1, &chr, 1);
 		chr = j + '0';
-		write(1, &j, 1);
+		write(1, &chr, 1);
 		chr = k + '0';
-		write(1, &k, 1);
+		write(1, &chr, 1);
     }
     if (current->parent != NULL) {
         print_path(current->parent, i, j, k);
