@@ -6,7 +6,7 @@
 /*   By: jgotz <jgotz@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 09:43:26 by lzipp             #+#    #+#             */
-/*   Updated: 2023/11/04 12:05:43 by jgotz            ###   ########.fr       */
+/*   Updated: 2023/11/04 13:30:35 by jgotz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include "../libs/printf/ft_printf.h"
 # include "../libs/get_next_line/get_next_line.h"
 # include <fcntl.h>
+# include <stdlib.h>
+# include <unistd.h>
 
 typedef struct field
 {

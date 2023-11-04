@@ -6,7 +6,7 @@
 /*   By: jgotz <jgotz@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 09:45:35 by lzipp             #+#    #+#             */
-/*   Updated: 2023/11/04 13:28:17 by jgotz            ###   ########.fr       */
+/*   Updated: 2023/11/04 13:30:51 by jgotz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,25 @@ field	**get_map(char *file)
 	char	*lines;
 	char	**map_array;
 	int		row_num;
+	char	*temp;
 
 	fd = open(file, O_RDONLY);
-	lines = ft_strdup("");
-	if (!lines || fd < 0)
+	if (fd < 0)
 		return (NULL);
 	row_num = 1;
 	line = get_next_line(fd);
+	lines = ft_strjoin("", line);
+	free(line);
 	while (line != NULL)
 	{
 		line = get_next_line(fd);
-		lines = ft_strjoin(lines, line);
+		if (!line)
+			break ;
+		temp = ft_strjoin(lines, line);
+		free(lines);
+		lines = ft_strdup(temp);
 		free(line);
+		free(temp);
 		row_num++;
 	}
 	close(fd);
