@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 09:45:35 by lzipp             #+#    #+#             */
-/*   Updated: 2023/11/04 11:42:36 by lzipp            ###   ########.fr       */
+/*   Updated: 2023/11/04 11:43:50 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ field	*get_fields(char *map)
 		field_index++;
 	}
 	fields[field_index].type = -1;
+	fields[field_index].cost_mult = -1;
 	fields[field_index].is_start = -1;
 	fields[field_index].is_end = -1;
-	fields[field_index].cost_mult = -1;
 	return (fields);
 }
